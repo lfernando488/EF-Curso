@@ -1,4 +1,5 @@
 ﻿
+using EF_Curso.Data.Configurations;
 using EF_Curso.Domain;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +24,8 @@ namespace EF_Curso.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            /*
             modelBuilder.Entity<Cliente>(cliente =>
             {
                 cliente.ToTable("Clientes");
@@ -32,6 +35,7 @@ namespace EF_Curso.Data
                 cliente.Property(cliente => cliente.CEP).HasColumnType("CHAR(8)").IsRequired();
                 cliente.Property(cliente => cliente.Estado).HasColumnType("CHAR(2)").IsRequired();
                 cliente.Property(cliente => cliente.Cidade).HasMaxLength(60).IsRequired();
+
                 cliente.HasIndex(i => i.Telefone).HasName("idx_cliente_telefone");
             });
 
@@ -58,6 +62,15 @@ namespace EF_Curso.Data
                     .WithOne(pedido => pedido.Pedido)
                     .OnDelete(DeleteBehavior.Cascade);
             });
+            */
+
+            // informar classe por classe de configuration
+            modelBuilder.ApplyConfiguration(new ClienteConfiguration());
+            modelBuilder.ApplyConfiguration(new ProdutoConfiguration());
+            modelBuilder.ApplyConfiguration(new PedidoConfiguration());
+
+            //ou procurar por todas as classes que implementam 
+            //modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationContext).Assembly);
         }
     }
 }
