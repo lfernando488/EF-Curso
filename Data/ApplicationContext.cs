@@ -2,6 +2,7 @@
 using EF_Curso.Data.Configurations;
 using EF_Curso.Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace EF_Curso.Data
 {
@@ -10,7 +11,11 @@ namespace EF_Curso.Data
 
         private readonly string _connectionString;
 
+        private static readonly ILoggerFactory _logger = LoggerFactory.Create(p => p.AddConsole());
+
         public DbSet<Pedido> pedidos { get; set; }
+        public DbSet<Produto> produtos { get; set; }
+        public DbSet<Cliente> clientes { get; set; }
 
         public ApplicationContext(string connectionString)
         {
@@ -19,7 +24,10 @@ namespace EF_Curso.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(_connectionString);
+            optionsBuilder
+                .UseLoggerFactory(_logger)
+                .EnableSensitiveDataLogging()
+                .UseSqlServer(_connectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
