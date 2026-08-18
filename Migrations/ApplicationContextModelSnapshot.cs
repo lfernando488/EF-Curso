@@ -145,7 +145,7 @@ namespace EF_Curso.Migrations
 
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasColumnType("CARCHAR(60)");
+                        .HasColumnType("VARCHAR(60)");
 
                     b.Property<string>("TipoProduto")
                         .IsRequired()

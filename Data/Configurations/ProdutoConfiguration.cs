@@ -11,7 +11,7 @@ namespace EF_Curso.Data.Configurations
             builder.ToTable("Produtos");
             builder.HasKey(produto => produto.Id);
             builder.Property(produto => produto.CodigoBarras).HasColumnType("VARCHAR(14)").IsRequired();
-            builder.Property(produto => produto.Descricao).HasColumnType("CARCHAR(60)");
+            builder.Property(produto => produto.Descricao).HasColumnType("VARCHAR(60)");
             builder.Property(produto => produto.Valor).IsRequired();
             builder.Property(produto => produto.TipoProduto).HasConversion<string>();
         }

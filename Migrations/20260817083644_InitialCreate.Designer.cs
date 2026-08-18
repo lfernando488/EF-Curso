@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EF_Curso.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20260817065729_InitialCreate")]
+    [Migration("20260817083644_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -148,7 +148,7 @@ namespace EF_Curso.Migrations
 
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasColumnType("CARCHAR(60)");
+                        .HasColumnType("VARCHAR(60)");
 
                     b.Property<string>("TipoProduto")
                         .IsRequired()

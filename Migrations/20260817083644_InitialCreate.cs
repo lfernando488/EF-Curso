@@ -35,7 +35,7 @@ namespace EF_Curso.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CodigoBarras = table.Column<string>(type: "VARCHAR(14)", nullable: false),
-                    Descricao = table.Column<string>(type: "CARCHAR(60)", nullable: false),
+                    Descricao = table.Column<string>(type: "VARCHAR(60)", nullable: false),
                     Valor = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     TipoProduto = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Ativo = table.Column<bool>(type: "bit", nullable: false)
