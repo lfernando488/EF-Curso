@@ -9,60 +9,114 @@ END;
 GO
 
 BEGIN TRANSACTION;
-CREATE TABLE [Clientes] (
-    [Id] int NOT NULL IDENTITY,
-    [Nome] VARCHAR(80) NOT NULL,
-    [Telefone] CHAR(11) NOT NULL,
-    [CEP] CHAR(8) NOT NULL,
-    [Estado] CHAR(2) NOT NULL,
-    [Cidade] nvarchar(60) NOT NULL,
-    CONSTRAINT [PK_Clientes] PRIMARY KEY ([Id])
-);
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260817083644_InitialCreate'
+)
+BEGIN
+    CREATE TABLE [Clientes] (
+        [Id] int NOT NULL IDENTITY,
+        [Nome] VARCHAR(80) NOT NULL,
+        [Telefone] CHAR(11) NOT NULL,
+        [CEP] CHAR(8) NOT NULL,
+        [Estado] CHAR(2) NOT NULL,
+        [Cidade] nvarchar(60) NOT NULL,
+        CONSTRAINT [PK_Clientes] PRIMARY KEY ([Id])
+    );
+END;
 
-CREATE TABLE [Produtos] (
-    [Id] int NOT NULL IDENTITY,
-    [CodigoBarras] VARCHAR(14) NOT NULL,
-    [Descricao] CARCHAR(60) NOT NULL,
-    [Valor] decimal(18,2) NOT NULL,
-    [TipoProduto] nvarchar(max) NOT NULL,
-    [Ativo] bit NOT NULL,
-    CONSTRAINT [PK_Produtos] PRIMARY KEY ([Id])
-);
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260817083644_InitialCreate'
+)
+BEGIN
+    CREATE TABLE [Produtos] (
+        [Id] int NOT NULL IDENTITY,
+        [CodigoBarras] VARCHAR(14) NOT NULL,
+        [Descricao] VARCHAR(60) NOT NULL,
+        [Valor] decimal(18,2) NOT NULL,
+        [TipoProduto] nvarchar(max) NOT NULL,
+        [Ativo] bit NOT NULL,
+        CONSTRAINT [PK_Produtos] PRIMARY KEY ([Id])
+    );
+END;
 
-CREATE TABLE [Pedidos] (
-    [Id] int NOT NULL IDENTITY,
-    [ClienteId] int NOT NULL,
-    [IniciadoEm] datetime2 NOT NULL DEFAULT (GETDATE()),
-    [FinalizadoEM] datetime2 NOT NULL,
-    [TipoFrete] int NOT NULL,
-    [StatusPedido] nvarchar(max) NOT NULL,
-    [Observacao] VARCHAR(512) NOT NULL,
-    CONSTRAINT [PK_Pedidos] PRIMARY KEY ([Id]),
-    CONSTRAINT [FK_Pedidos_Clientes_ClienteId] FOREIGN KEY ([ClienteId]) REFERENCES [Clientes] ([Id]) ON DELETE CASCADE
-);
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260817083644_InitialCreate'
+)
+BEGIN
+    CREATE TABLE [Pedidos] (
+        [Id] int NOT NULL IDENTITY,
+        [ClienteId] int NOT NULL,
+        [IniciadoEm] datetime2 NOT NULL DEFAULT (GETDATE()),
+        [FinalizadoEM] datetime2 NOT NULL,
+        [TipoFrete] int NOT NULL,
+        [StatusPedido] nvarchar(max) NOT NULL,
+        [Observacao] VARCHAR(512) NOT NULL,
+        CONSTRAINT [PK_Pedidos] PRIMARY KEY ([Id]),
+        CONSTRAINT [FK_Pedidos_Clientes_ClienteId] FOREIGN KEY ([ClienteId]) REFERENCES [Clientes] ([Id]) ON DELETE CASCADE
+    );
+END;
 
-CREATE TABLE [PedidoItem] (
-    [Id] int NOT NULL IDENTITY,
-    [PedidoId] int NOT NULL,
-    [ProdutoId] int NOT NULL,
-    [Quantidade] int NOT NULL,
-    [Valor] decimal(18,2) NOT NULL,
-    [Desconto] decimal(18,2) NOT NULL,
-    CONSTRAINT [PK_PedidoItem] PRIMARY KEY ([Id]),
-    CONSTRAINT [FK_PedidoItem_Pedidos_PedidoId] FOREIGN KEY ([PedidoId]) REFERENCES [Pedidos] ([Id]) ON DELETE CASCADE,
-    CONSTRAINT [FK_PedidoItem_Produtos_ProdutoId] FOREIGN KEY ([ProdutoId]) REFERENCES [Produtos] ([Id]) ON DELETE CASCADE
-);
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260817083644_InitialCreate'
+)
+BEGIN
+    CREATE TABLE [PedidoItem] (
+        [Id] int NOT NULL IDENTITY,
+        [PedidoId] int NOT NULL,
+        [ProdutoId] int NOT NULL,
+        [Quantidade] int NOT NULL,
+        [Valor] decimal(18,2) NOT NULL,
+        [Desconto] decimal(18,2) NOT NULL,
+        CONSTRAINT [PK_PedidoItem] PRIMARY KEY ([Id]),
+        CONSTRAINT [FK_PedidoItem_Pedidos_PedidoId] FOREIGN KEY ([PedidoId]) REFERENCES [Pedidos] ([Id]) ON DELETE CASCADE,
+        CONSTRAINT [FK_PedidoItem_Produtos_ProdutoId] FOREIGN KEY ([ProdutoId]) REFERENCES [Produtos] ([Id]) ON DELETE CASCADE
+    );
+END;
 
-CREATE INDEX [idx_cliente_telefone] ON [Clientes] ([Telefone]);
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260817083644_InitialCreate'
+)
+BEGIN
+    CREATE INDEX [idx_cliente_telefone] ON [Clientes] ([Telefone]);
+END;
 
-CREATE INDEX [IX_PedidoItem_PedidoId] ON [PedidoItem] ([PedidoId]);
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260817083644_InitialCreate'
+)
+BEGIN
+    CREATE INDEX [IX_PedidoItem_PedidoId] ON [PedidoItem] ([PedidoId]);
+END;
 
-CREATE INDEX [IX_PedidoItem_ProdutoId] ON [PedidoItem] ([ProdutoId]);
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260817083644_InitialCreate'
+)
+BEGIN
+    CREATE INDEX [IX_PedidoItem_ProdutoId] ON [PedidoItem] ([ProdutoId]);
+END;
 
-CREATE INDEX [IX_Pedidos_ClienteId] ON [Pedidos] ([ClienteId]);
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260817083644_InitialCreate'
+)
+BEGIN
+    CREATE INDEX [IX_Pedidos_ClienteId] ON [Pedidos] ([ClienteId]);
+END;
 
-INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20260817065729_InitialCreate', N'10.0.11');
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260817083644_InitialCreate'
+)
+BEGIN
+    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+    VALUES (N'20260817083644_InitialCreate', N'10.0.11');
+END;
 
 COMMIT;
 GO

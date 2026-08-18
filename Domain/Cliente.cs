@@ -19,6 +19,8 @@ namespace EF_Curso.Domain
         public string Estado { get; set; }
         public string Cidade { get; set; }
 
+        public string Email { get; set; }
+
 
     }
 }

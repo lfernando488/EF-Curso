@@ -1,5 +1,7 @@
 ﻿using EF_Curso.Data;
 using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
@@ -16,5 +18,11 @@ if (string.IsNullOrWhiteSpace(connectionString))
 }
 
 using var context = new ApplicationContext(connectionString);
+var existeAtualizacao = context.Database.GetPendingMigrations();
 
-Console.WriteLine(connectionString);
+if(!existeAtualizacao.IsNullOrEmpty())
+{
+    //valida se executa ou nao as migrations
+}
+
+Console.WriteLine("Aplicação inciada!");
