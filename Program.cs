@@ -55,7 +55,8 @@ namespace EF_Curso
                 //InserirDados(connectionString);
                 //ConsultarDados(connectionString);
                 //CadastrarPedido(connectionString);
-                ConstularPedidoCarregamentoAdiantado(connectionString);
+                //ConstularPedidoCarregamentoAdiantado(connectionString);
+                AtualizarDados(connectionString, 1);
             }
             catch (Exception ex)
             {
@@ -183,8 +184,40 @@ namespace EF_Curso
                 .ToList();
 
             foreach (var item in pedidos)
-                Console.WriteLine(item.Id + " - " + item.StatusPedido); 
-                
+                Console.WriteLine(item.Id + " - " + item.StatusPedido);
+
+        }
+
+        private static void AtualizarDados(string connection, int idCliente)
+        {
+            using var context = new ApplicationContext(connection);
+
+            /*
+            // Atualizando diretamente o objeto
+            var cliente = context.clientes.Find(idCliente);
+
+            if (cliente != null)
+            {
+                cliente.Nome = "Nome cliente alterado";
+                context.clientes.Update(cliente);
+                context.SaveChanges();
+            }
+            else
+                throw new Exception("Cliente nao encontrado");
+            */
+
+            // Atualizando atraves do id
+            var cliente = new Cliente { Id = 1 };
+            var dadosAtualizacaoCliente = new
+            {
+                Nome = "NOME CLIENTE ATUALIZADO",
+                Telefone = "11977889944",
+            };
+
+            //EF comeca a rastrear o objeto
+            context.Attach(cliente);
+            context.Entry(cliente).CurrentValues.SetValues(dadosAtualizacaoCliente);
+            context.SaveChanges();
         }
 
     }
