@@ -53,8 +53,9 @@ namespace EF_Curso
                 //var registros = produtoContext.SaveChanges(); //aplica as alteracoes no banco
                 //Console.WriteLine(string.Format("{0} registros inseridos !", registros));
                 //InserirDados(connectionString);
-                ConsultarDados(connectionString);
-
+                //ConsultarDados(connectionString);
+                //CadastrarPedido(connectionString);
+                ConstularPedidoCarregamentoAdiantado(connectionString);
             }
             catch (Exception ex)
             {
@@ -139,6 +140,51 @@ namespace EF_Curso
                 //context.clientes.Find(cliente.Id); //Apenas o Find() consulta a memoria, os demais consultam o banco de dados
                 context.clientes.FirstOrDefault(c => c.Id == cliente.Id);
             }
+        }
+
+        private static void CadastrarPedido(string connection)
+        {
+            using var context = new ApplicationContext(connection);
+            var cliente = context.clientes.FirstOrDefault();
+            var produto = context.produtos.FirstOrDefault();
+
+            var pedido = new Pedido
+            {
+                ClienteId = cliente.Id,
+                IniciadoEm = DateTime.Now,
+                FinalizadoEM = DateTime.Now,
+                Observacao = "Pedido teste",
+                StatusPedido = ValueObjects.StatusPedido.Analise,
+                TipoFrete = ValueObjects.TipoFrete.SemFrete,
+                Items = new List<PedidoItem>
+                {
+                    new PedidoItem
+                    {
+                        ProdutoId = produto.Id,
+                        Desconto = 0,
+                        Quantidade = 1,
+                        Valor = 10
+                    }
+                }
+            };
+
+            context.pedidos.Add(pedido);
+            context.SaveChanges();
+
+        }
+
+        private static void ConstularPedidoCarregamentoAdiantado(string connection)
+        {
+            using var context = new ApplicationContext(connection);
+            var pedidos = context
+                .pedidos
+                .Include(pedido => pedido.Items)
+                .ThenInclude(item => item.Produto)
+                .ToList();
+
+            foreach (var item in pedidos)
+                Console.WriteLine(item.Id + " - " + item.StatusPedido); 
+                
         }
 
     }
