@@ -80,5 +80,8 @@ namespace EF_Curso.Data
             //ou procurar por todas as classes que implementam 
             //modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationContext).Assembly);
         }
+
+        
+
     }
 }

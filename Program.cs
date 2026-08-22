@@ -2,7 +2,6 @@
 using EF_Curso.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace EF_Curso
 {
@@ -56,7 +55,8 @@ namespace EF_Curso
                 //ConsultarDados(connectionString);
                 //CadastrarPedido(connectionString);
                 //ConstularPedidoCarregamentoAdiantado(connectionString);
-                AtualizarDados(connectionString, 1);
+                //AtualizarDados(connectionString, 1);
+                RemoverDados(connectionString, 3);
             }
             catch (Exception ex)
             {
@@ -218,6 +218,24 @@ namespace EF_Curso
             context.Attach(cliente);
             context.Entry(cliente).CurrentValues.SetValues(dadosAtualizacaoCliente);
             context.SaveChanges();
+        }
+
+        private static void RemoverDados(string connection, int idCliente)
+        {
+            using var context = new ApplicationContext(connection);
+
+            //var cliente = context.clientes.Find(idCliente);
+            //context.clientes.Remove(cliente); //removendo pelo objeto
+            //context.Entry(cliente).State = EntityState.Deleted; //monitora o objeto e remove mudando o estado
+            //context.SaveChanges();
+
+            //OU
+            var cliente = new Cliente { Id = idCliente };
+            context.Entry(cliente).State = EntityState.Deleted;
+            context.SaveChanges();
+
+
+
         }
 
     }
