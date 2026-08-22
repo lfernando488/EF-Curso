@@ -27,7 +27,11 @@ namespace EF_Curso.Data
             optionsBuilder
                 .UseLoggerFactory(_logger)
                 .EnableSensitiveDataLogging()
-                .UseSqlServer(_connectionString);
+                .UseSqlServer(_connectionString, p => p.EnableRetryOnFailure(
+                    maxRetryCount: 2, 
+                    maxRetryDelay: 
+                    TimeSpan.FromSeconds(10),
+                    errorNumbersToAdd: null));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
