@@ -31,7 +31,7 @@ namespace EF_Curso.Data
                     maxRetryCount: 2, 
                     maxRetryDelay: 
                     TimeSpan.FromSeconds(10),
-                    errorNumbersToAdd: null));
+                    errorNumbersToAdd: null).MigrationsHistoryTable("CURSO_EF_CORE"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
