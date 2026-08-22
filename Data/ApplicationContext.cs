@@ -32,7 +32,7 @@ namespace EF_Curso.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            MapearPropriedadesEsquecidas(modelBuilder);
             /*
             modelBuilder.Entity<Cliente>(cliente =>
             {
@@ -81,7 +81,21 @@ namespace EF_Curso.Data
             //modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationContext).Assembly);
         }
 
-        
+        //Define tamanho para qualquer propriedade do tipo string que nao tenha tamanho fixado durante a modelagem
+        private void MapearPropriedadesEsquecidas(ModelBuilder modelBuilder)
+        {
+            foreach (var entity in modelBuilder.Model.GetEntityTypes()) 
+            {
+                var properties = entity.GetProperties().Where(p => p.ClrType == typeof(string));
+                foreach (var property in properties)
+                {
+                    if (string.IsNullOrEmpty(property.GetColumnType()) && !property.GetMaxLength().HasValue)
+                    {
+                        property.SetColumnType("VARCHAR(100)");
+                    }
+                }
+            }
+        }
 
     }
 }
